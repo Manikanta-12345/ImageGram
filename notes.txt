@@ -1,0 +1,41 @@
+const likeSchema = new mongoose.Schema({
+    onModel: {
+        type: String,
+        required: true,
+        enum: ["Post", "Comment"],
+    },
+    likeableId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        refPath: "onModel",
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: "User",
+    },
+}, { timestamps: true });
+
+The likeSchema in your code defines a Mongoose schema for a collection of "likes" in a MongoDB database. This schema uses the concept of polymorphic references, allowing a "like" to be associated with different types of objects (e.g., a Post or a Comment).
+
+Explanation of Each Field
+onModel
+
+Specifies the type of object the "like" is associated with.
+It must be either "Post" or "Comment" (restricted by the enum validator).
+likeableId
+
+A reference to the specific object (post or comment) that is being liked.
+Uses refPath to determine which model (Post or Comment) to reference based on the value of onModel.
+user
+
+Refers to the User who liked the object.
+timestamps
+
+Automatically adds createdAt and updatedAt fields to track when the "like" was created or modified.
+Example Scenario
+Imagine you have a blog application where:
+
+Users can like posts.
+Users can like comments.
+This schema allows a single Like collection to store likes for both posts and comments.
